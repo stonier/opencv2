@@ -1059,3 +1059,5 @@ endif()
 # ----------------------------------------------------------------------------
 
 include(cmake/OpenCVPackaging.cmake)
+
+#install(FILES package.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/package.xml)

@@ -1,0 +1,26 @@
+<package>
+  <name>opencv</name>
+  <version>2.4.9</version>
+  <description>
+     Forked version of opencv with experimental parallel thread qt support.
+  </description>
+  <url type="repository">https://github.com/stonier/opencv</url>
+  <url type="bugtracker">https://github.com/stonier/opencv/issues</url>
+  <maintainer email="d.stoneir@gmail.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <author>Daniel Stonier</author>
+
+  <buildtool_depend>cmake</buildtool_depend>
+
+  <!-- Must be stacks of others too -->
+  <build_depend>libqt4-dev</build_depend>
+
+  <run_depend>catkin</run_depend>
+  <run_depend>libqt4-dev</run_depend>
+
+<export>
+    <build_type>cmake</build_type>
+  </export>
+</package>
+
+
