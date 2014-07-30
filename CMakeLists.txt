@@ -1060,4 +1060,4 @@ endif()
 
 include(cmake/OpenCVPackaging.cmake)
 
-install(FILES package.xml DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/opencv2)
+install(FILES package.xml DESTINATION share/opencv2)
