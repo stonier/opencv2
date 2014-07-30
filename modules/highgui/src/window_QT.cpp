@@ -329,7 +329,6 @@ CV_IMPL int cvWaitKey(int delay)
 
         guiMainThread->bTimeOut = false;
     }
-
     return result;
 }
 
@@ -476,14 +475,14 @@ CV_IMPL int cvNamedWindow(const char* name, int flags)
         multiThreads = true;
         QMetaObject::invokeMethod(guiMainThread,
         "createWindow",
-        Qt::BlockingQueuedConnection,
+        Qt::BlockingQueuedConnection,  // block so that we can do useful stuff once we confirm it is created
         Q_ARG(QString, QString(name)),
         Q_ARG(int, flags));
      } else {
         guiMainThread->createWindow(QString(name), flags);
      }
 
-    return 1; //Dummy value
+    return 1; //Dummy value - probably should return the result of the invocation.
 }
 
 
@@ -494,7 +493,7 @@ CV_IMPL void cvDestroyWindow(const char* name)
 
     QMetaObject::invokeMethod(guiMainThread,
         "destroyWindow",
-        autoBlockingConnection(),
+        Qt::AutoConnection,  // if another thread is controlling, let it handle it without blocking ourselves here
         Q_ARG(QString, QString(name)));
 }
 
@@ -505,7 +504,7 @@ CV_IMPL void cvDestroyAllWindows()
         return;
     QMetaObject::invokeMethod(guiMainThread,
         "destroyAllWindow",
-        autoBlockingConnection()
+        Qt::AutoConnection  // if another thread is controlling, let it handle it without blocking ourselves here
         );
 }
 
@@ -959,6 +958,7 @@ void GuiReceiver::showImage(QString name, void* arr)
 
 void GuiReceiver::destroyWindow(QString name)
 {
+
     QPointer<CvWindow> w = icvFindWindowByName(name);
 
     if (w)
