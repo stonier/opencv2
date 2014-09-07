@@ -1,6 +1,6 @@
 <package>
   <name>opencv</name>
-  <version>2.4.13</version>
+  <version>2.4.14</version>
   <description>
      Forked version of opencv with experimental parallel thread qt support.
   </description>
