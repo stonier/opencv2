@@ -470,7 +470,6 @@ CV_IMPL int cvNamedWindow(const char* name, int flags)
 {
     if (!guiMainThread)
         guiMainThread = new GuiReceiver;
-    //if (multiThreads)
     if (QThread::currentThread() != QApplication::instance()->thread()) {
         multiThreads = true;
         QMetaObject::invokeMethod(guiMainThread,
@@ -655,12 +654,17 @@ CV_IMPL void cvShowImage(const char* name, const CvArr* arr)
 {
     if (!guiMainThread)
         guiMainThread = new GuiReceiver;
-
-    QMetaObject::invokeMethod(guiMainThread,
-        "showImage",
-        autoBlockingConnection(),
-        Q_ARG(QString, QString(name)),
-        Q_ARG(void*, (void*)arr));
+    if (QThread::currentThread() != QApplication::instance()->thread()) {
+        multiThreads = true;
+        QMetaObject::invokeMethod(guiMainThread,
+            "showImage",
+             autoBlockingConnection(),
+             Q_ARG(QString, QString(name)),
+             Q_ARG(void*, (void*)arr)
+        );
+     } else {
+        guiMainThread->showImage(QString(name), arr);
+     }
 }
 
 
@@ -1523,7 +1527,6 @@ CvWinProperties::~CvWinProperties()
 CvWindow::CvWindow(QString name, int arg2)
 {
     type = type_CvWindow;
-    moveToThread(qApp->instance()->thread());
 
     param_flags = arg2 & 0x0000000F;
     param_gui_mode = arg2 & 0x000000F0;
