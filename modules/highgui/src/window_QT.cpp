@@ -733,18 +733,21 @@ double cvGetOpenGlProp_QT(const char* name)
 //////////////////////////////////////////////////////
 // GuiReceiver
 
+#include <iostream>
 
 GuiReceiver::GuiReceiver() : bTimeOut(false), nb_windows(0)
 {
     doesExternalQAppExist = (QApplication::instance() != 0);
+    icvInitSystem(&parameterSystemC, parameterSystemV);
+
+    std::cout << "Creating QTimer" << std::endl;
+    timer = new QTimer(this);
+    std::cout << "Created QTimer" << std::endl;
+    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(timeOut()));
+    timer->setSingleShot(true);
     if ( doesExternalQAppExist ) {
         moveToThread(QApplication::instance()->thread());
     }
-    icvInitSystem(&parameterSystemC, parameterSystemV);
-
-    timer = new QTimer(this);
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(timeOut()));
-    timer->setSingleShot(true);
 }
 
 
