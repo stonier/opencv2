@@ -76,6 +76,9 @@ static const unsigned int threshold_zoom_img_region = 30;
 static CvWinProperties* global_control_panel = NULL;
 //end static and global
 
+
+Qt::ConnectionType autoBlockingConnection();
+
 Qt::ConnectionType autoBlockingConnection() {
   return (QThread::currentThread() != QApplication::instance()->thread())
       ? Qt::BlockingQueuedConnection
@@ -663,7 +666,7 @@ CV_IMPL void cvShowImage(const char* name, const CvArr* arr)
              Q_ARG(void*, (void*)arr)
         );
      } else {
-        guiMainThread->showImage(QString(name), arr);
+        guiMainThread->showImage(QString(name), (void*)arr);
      }
 }
 
